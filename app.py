@@ -1,11 +1,18 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 # Ruta principal
-@app.route('/')
+#Esta ruta no lleva s indes
+@app.route("/")
 def index():
-    return "Hola, mundo!"
+    return render_template("index.html", title="Inicio")
+
+#Esta ruta nos lleva a About
+
+@app.route("/about")
+def about():
+    return render_template("about.html", title="Sobre Nosotros")
 
 # Ruta con un parámetro dinámico
 @app.route('/usuario/<nombre>')

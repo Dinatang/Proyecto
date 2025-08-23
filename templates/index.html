@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2 class="text-center mb-4">Bienvenidos a Dulce Hogar</h2>
+
+    <!-- Carrusel -->
+    <div id="carouselDulceHogar" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner rounded shadow">
+
+            <div class="carousel-item active">
+                <img src="{{ url_for('static', filename= 'img/imagen5.jpg') }}" class="d-block w-100" alt="Pan fresco">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                    <h5>Pan recién horneado</h5>
+                    <p>Hecho cada mañana para ti</p>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='img/imagen 2.jpg') }}" class="d-block w-100" alt="Pastel delicioso">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                    <h5>Pasteles irresistibles</h5>
+                    <p>Perfectos para tus celebraciones</p>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='img/imagen7.jpg') }}" class="d-block w-100" alt="Panadería">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                    <h5>El sabor de hogar</h5>
+                    <p>Panadería y pastelería hecha con amor</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselDulceHogar" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselDulceHogar" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+{% endblock %}
+
