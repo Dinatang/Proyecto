@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Productos - Dulce Hogar{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Productos</h2>
+    <a href="{{ url_for('crear_producto') }}" class="btn btn-success">Agregar Producto</a>
+</div>
+
+<form method="get" action="{{ url_for('listar_productos') }}" class="mb-3 d-flex">
+    <input type="text" name="q" value="{{ q }}" placeholder="Buscar producto..." class="form-control me-2">
+    <button class="btn btn-primary">Buscar</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.id }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.cantidad }}</td>
+            <td>{{ producto.precio }}</td>
+            <td>
+                <a href="{{ url_for('editar_producto', pid=producto.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form action="{{ url_for('eliminar_producto', pid=producto.id) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
