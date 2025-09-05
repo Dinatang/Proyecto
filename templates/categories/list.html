@@ -1,33 +1,30 @@
 {% extends "base.html" %}
-{% block title %}Lista de Categorías{% endblock %}
+
+{% block title %}Categorías{% endblock %}
 
 {% block content %}
 <h2>Lista de Categorías</h2>
+
 <a href="{{ url_for('nueva_categoria') }}" class="btn btn-success mb-3">Nueva Categoría</a>
 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for categoria in categorias %}
-        <tr>
-            <td>{{ categoria.id }}</td>
-            <td>{{ categoria.nombre }}</td>
-            <td>{{ categoria.descripcion }}</td>
-            <td>
-                <a href="{{ url_for('editar_categoria', id=categoria.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                <form action="{{ url_for('eliminar_categoria', id=categoria.id) }}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar categoría?')">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Descripción</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for categoria in categorias %}
+    <tr>
+      <td>{{ categoria.id }}</td>
+      <td>{{ categoria.nombre }}</td>
+      <td>{{ categoria.descripcion or '-' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No hay categorías registradas.</td></tr>
+    {% endfor %}
+  </tbody>
 </table>
 {% endblock %}
