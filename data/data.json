@@ -1,0 +1,83 @@
+{
+  "clientes": [
+    {
+      "id": 1,
+      "nombre": "Ana López",
+      "correo": "ana@gmail.com",
+      "telefono": "0991234567",
+      "direccion": "Av. Central 123"
+    },
+    {
+      "id": 2,
+      "nombre": "Carlos Pérez",
+      "correo": "carlos@hotmail.com",
+      "telefono": "0987654321",
+      "direccion": "Calle Norte 456"
+    }
+  ],
+  "categorias": [
+    {
+      "id": 1,
+      "nombre": "Panadería",
+      "descripcion": "Pan fresco todos los días"
+    },
+    {
+      "id": 2,
+      "nombre": "Pastelería",
+      "descripcion": "Tortas y postres"
+    }
+  ],
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Pan de Yuca",
+      "precio": 0.50,
+      "cantidad": 100,
+      "id_categoria": 1
+    },
+    {
+      "id": 2,
+      "nombre": "Torta de Chocolate",
+      "precio": 12.00,
+      "cantidad": 5,
+      "id_categoria": 2
+    }
+  ],
+  "usuarios": [
+    {
+      "id": 1,
+      "nombre": "Administrador",
+      "correo": "admin@dulcehogar.com",
+      "contraseña": "12345",
+      "rol": "admin"
+    },
+    {
+      "id": 2,
+      "nombre": "Empleado",
+      "correo": "empleado@dulcehogar.com",
+      "contraseña": "12345",
+      "rol": "empleado"
+    }
+  ],
+  "ordenes": [
+    {
+      "id": 1,
+      "id_cliente": 1,
+      "fecha": "2025-09-05",
+      "total": 13.00,
+      "detalles": [
+        {
+          "id_producto": 1,
+          "cantidad": 2,
+          "subtotal": 1.00
+        },
+        {
+          "id_producto": 2,
+          "cantidad": 1,
+          "subtotal": 12.00
+        }
+      ]
+    }
+  ]
+}
+

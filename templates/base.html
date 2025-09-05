@@ -8,14 +8,31 @@
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">Dulce Hogar</a>
-            <div class="collapse navbar-collapse">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Acerca de</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}">Productos</a></li>
+
+                    <!-- Dropdown Gestión -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Gestión
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('listar_categorias') }}">Categorías</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_productos') }}">Productos</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_clientes') }}">Clientes</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_usuarios') }}">Usuarios</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('listar_ordenes') }}">Órdenes</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
