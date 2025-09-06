@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DecimalField, PasswordField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, Length, Email
-from datetime import datetime
 
 # --- Configuración ---
 app = Flask(__name__)
@@ -46,15 +45,6 @@ class Orden(db.Model):
     cliente_id = db.Column(db.Integer, db.ForeignKey("cliente.id"), nullable=False)
     fecha = db.Column(db.String(20))
     total = db.Column(db.Float, default=0.0)
-    detalles = db.relationship("DetalleOrden", backref="orden", lazy=True)
-
-class DetalleOrden(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    orden_id = db.Column(db.Integer, db.ForeignKey("orden.id"), nullable=False)
-    producto_id = db.Column(db.Integer, db.ForeignKey("producto.id"), nullable=False)
-    cantidad = db.Column(db.Integer, nullable=False, default=1)
-    subtotal = db.Column(db.Float, nullable=False, default=0.0)
-    producto = db.relationship("Producto")
 
 # --- FORMULARIOS ---
 class CategoriaForm(FlaskForm):
@@ -83,6 +73,11 @@ class UsuarioForm(FlaskForm):
     rol = SelectField("Rol", choices=[("admin", "Administrador"), ("empleado", "Empleado")])
     submit = SubmitField("Guardar")
 
+class OrdenForm(FlaskForm):
+    cliente_id = SelectField("Cliente", coerce=int, validators=[DataRequired()])
+    fecha = StringField("Fecha", validators=[DataRequired()])
+    submit = SubmitField("Guardar")
+
 # --- RUTAS GENERALES ---
 @app.route('/')
 def index():
@@ -92,11 +87,11 @@ def index():
 def about():
     return render_template("about.html", title="Acerca de")
 
-# --- CRUD CATEGORÍAS ---
+# --- CRUD CATEGORIAS ---
 @app.route('/categorias')
 def listar_categorias():
     categorias = Categoria.query.all()
-    return render_template("categorias/list.html", categorias=categorias)
+    return render_template("categories/list.html", categorias=categorias)
 
 @app.route('/categorias/nuevo', methods=["GET", "POST"])
 def nueva_categoria():
@@ -106,13 +101,13 @@ def nueva_categoria():
         db.session.commit()
         flash("Categoría creada con éxito", "success")
         return redirect(url_for("listar_categorias"))
-    return render_template("categorias/form.html", form=form, modo="nuevo")
+    return render_template("categories/form.html", form=form, modo="nuevo")
 
 # --- CRUD PRODUCTOS ---
 @app.route('/productos')
 def listar_productos():
     productos = Producto.query.all()
-    return render_template("productos/list.html", productos=productos)
+    return render_template("products/list.html", productos=productos)
 
 @app.route('/productos/nuevo', methods=['GET', 'POST'])
 def crear_producto():
@@ -128,13 +123,13 @@ def crear_producto():
         db.session.commit()
         flash("Producto agregado correctamente.", "success")
         return redirect(url_for('listar_productos'))
-    return render_template('productos/form.html', form=form, modo='crear')
+    return render_template('products/form.html', form=form, modo='crear')
 
 # --- CRUD CLIENTES ---
 @app.route('/clientes')
 def listar_clientes():
     clientes = Cliente.query.all()
-    return render_template("clientes/list.html", clientes=clientes)
+    return render_template("customers/list.html", clientes=clientes)
 
 @app.route('/clientes/nuevo', methods=["GET", "POST"])
 def nuevo_cliente():
@@ -149,13 +144,13 @@ def nuevo_cliente():
         db.session.commit()
         flash("Cliente agregado con éxito", "success")
         return redirect(url_for("listar_clientes"))
-    return render_template("clientes/form.html", form=form, modo="nuevo")
+    return render_template("customers/form.html", form=form, modo="nuevo")
 
 # --- CRUD USUARIOS ---
 @app.route("/usuarios")
 def listar_usuarios():
     usuarios = Usuario.query.all()
-    return render_template("usuarios/list.html", usuarios=usuarios)
+    return render_template("users/list.html", usuarios=usuarios)
 
 @app.route("/usuarios/nuevo", methods=["GET", "POST"])
 def nuevo_usuario():
@@ -170,50 +165,59 @@ def nuevo_usuario():
         db.session.commit()
         flash("Usuario agregado con éxito", "success")
         return redirect(url_for("listar_usuarios"))
-    return render_template("usuarios/form.html", form=form, modo="nuevo")
+    return render_template("users/form.html", form=form, modo="nuevo")
 
 # --- CRUD ORDENES ---
 @app.route('/ordenes')
 def listar_ordenes():
     ordenes = Orden.query.all()
-    return render_template("ordenes/list.html", ordenes=ordenes)
+    return render_template("orders/list.html", ordenes=ordenes)
 
-@app.route('/ordenes/nueva', methods=["GET", "POST"])
+@app.route('/ordenes/nuevo', methods=["GET", "POST"])
 def nueva_orden():
+    form = OrdenForm()
     clientes = Cliente.query.all()
-    productos = Producto.query.all()
+    if not clientes:
+        flash("Debe agregar al menos un cliente antes de crear una orden.", "warning")
+        return redirect(url_for("listar_clientes"))
+    form.cliente_id.choices = [(c.id, c.nombre) for c in clientes]
 
-    if request.method == "POST":
-        cliente_id = int(request.form.get("cliente_id"))
-        lista_productos = request.form.getlist("producto_id")
-        lista_cantidades = request.form.getlist("cantidad")
-
-        orden = Orden(cliente_id=cliente_id, fecha=datetime.now().strftime("%Y-%m-%d"), total=0)
-        db.session.add(orden)
+    if form.validate_on_submit():
+        nueva = Orden(
+            cliente_id=form.cliente_id.data,
+            fecha=form.fecha.data,
+            total=0.0
+        )
+        db.session.add(nueva)
         db.session.commit()
+        flash("Orden creada con éxito.", "success")
+        return redirect(url_for("listar_ordenes"))
+    return render_template("orders/form.html", form=form, modo="nuevo")
 
-        total = 0
-        for pid, cant in zip(lista_productos, lista_cantidades):
-            cant = int(cant)
-            if cant > 0:
-                producto = Producto.query.get(int(pid))
-                subtotal = producto.precio * cant
-                detalle = DetalleOrden(
-                    orden_id=orden.id,
-                    producto_id=producto.id,
-                    cantidad=cant,
-                    subtotal=subtotal
-                )
-                db.session.add(detalle)
-                total += subtotal
-        orden.total = total
+@app.route('/ordenes/editar/<int:id>', methods=["GET", "POST"])
+def editar_orden(id):
+    orden = Orden.query.get_or_404(id)
+    form = OrdenForm(obj=orden)
+    form.cliente_id.choices = [(c.id, c.nombre) for c in Cliente.query.all()]
+
+    if form.validate_on_submit():
+        orden.cliente_id = form.cliente_id.data
+        orden.fecha = form.fecha.data
         db.session.commit()
-        flash("Orden registrada con éxito", "success")
+        flash("Orden actualizada con éxito.", "success")
         return redirect(url_for("listar_ordenes"))
 
-    return render_template("ordenes/form.html", clientes=clientes, productos=productos)
+    return render_template("orders/form.html", form=form, modo="editar")
 
-# --- INICIALIZAR BASE DE DATOS ---
+@app.route('/ordenes/eliminar/<int:id>', methods=["POST"])
+def eliminar_orden(id):
+    orden = Orden.query.get_or_404(id)
+    db.session.delete(orden)
+    db.session.commit()
+    flash("Orden eliminada con éxito.", "danger")
+    return redirect(url_for("listar_ordenes"))
+
+# --- INICIALIZAR DB ---
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

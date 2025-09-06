@@ -1,33 +1,28 @@
 {% extends "base.html" %}
-{% block title %}Nueva Orden{% endblock %}
+{% block title %}{{ 'Editar' if modo=='editar' else 'Nueva Orden' }}{% endblock %}
 
 {% block content %}
-<h2>Nueva Orden</h2>
-
+<h2>{{ 'Editar' if modo=='editar' else 'Nueva Orden' }}</h2>
 <form method="post">
-  <div class="mb-3">
-    <label class="form-label">Cliente</label>
-    <select name="cliente_id" class="form-select">
-      {% for cliente in clientes %}
-      <option value="{{ cliente.id }}">{{ cliente.nombre }}</option>
-      {% endfor %}
-    </select>
-  </div>
+    {{ form.hidden_tag() }}
 
-  <h4>Productos</h4>
-  {% for producto in productos %}
-  <div class="mb-2 row align-items-center">
-    <div class="col-sm-6">
-      <label class="form-label">{{ producto.nombre }} (${{ "%.2f"|format(producto.precio) }})</label>
+    <div class="mb-3">
+        {{ form.cliente_id.label(class="form-label") }}
+        {{ form.cliente_id(class="form-select") }}
+        {% for error in form.cliente_id.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
     </div>
-    <div class="col-sm-3">
-      <input type="hidden" name="producto_id" value="{{ producto.id }}">
-      <input type="number" name="cantidad" value="0" min="0" class="form-control">
-    </div>
-  </div>
-  {% endfor %}
 
-  <button type="submit" class="btn btn-primary mt-3">Registrar Orden</button>
-  <a href="{{ url_for('listar_ordenes') }}" class="btn btn-secondary mt-3">Cancelar</a>
+    <div class="mb-3">
+        {{ form.fecha.label(class="form-label") }}
+        {{ form.fecha(class="form-control") }}
+        {% for error in form.fecha.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ 'Actualizar' if modo=='editar' else 'Guardar' }}</button>
+    <a href="{{ url_for('listar_ordenes') }}" class="btn btn-secondary">Cancelar</a>
 </form>
 {% endblock %}
