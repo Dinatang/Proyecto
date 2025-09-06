@@ -1,28 +1,21 @@
 {% extends "base.html" %}
-{% block title %}{{ 'Editar' if modo=='editar' else 'Nueva Orden' }}{% endblock %}
-
+{% block title %}Orden{% endblock %}
 {% block content %}
-<h2>{{ 'Editar' if modo=='editar' else 'Nueva Orden' }}</h2>
+<h2>{{ orden and 'Editar Orden' or 'Nueva Orden' }}</h2>
 <form method="post">
-    {{ form.hidden_tag() }}
-
     <div class="mb-3">
-        {{ form.cliente_id.label(class="form-label") }}
-        {{ form.cliente_id(class="form-select") }}
-        {% for error in form.cliente_id.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        <label>Cliente</label>
+        <select name="cliente_id" class="form-select">
+            {% for c in clientes %}
+            <option value="{{ c.id }}" {% if orden and orden.cliente_id == c.id %}selected{% endif %}>{{ c.nombre }}</option>
+            {% endfor %}
+        </select>
     </div>
-
     <div class="mb-3">
-        {{ form.fecha.label(class="form-label") }}
-        {{ form.fecha(class="form-control") }}
-        {% for error in form.fecha.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        <label>Total</label>
+        <input type="number" step="0.01" name="total" class="form-control" value="{{ orden.total if orden else '' }}">
     </div>
-
-    <button type="submit" class="btn btn-primary">{{ 'Actualizar' if modo=='editar' else 'Guardar' }}</button>
+    <button class="btn btn-primary">Guardar</button>
     <a href="{{ url_for('listar_ordenes') }}" class="btn btn-secondary">Cancelar</a>
 </form>
 {% endblock %}

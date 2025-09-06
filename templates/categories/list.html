@@ -1,30 +1,28 @@
 {% extends "base.html" %}
-
 {% block title %}Categorías{% endblock %}
-
 {% block content %}
-<h2>Lista de Categorías</h2>
+<div class="d-flex justify-content-between mb-3">
+    <h2>Categorías</h2>
+    <a href="{{ url_for('crear_categoria') }}" class="btn btn-success">Agregar</a>
+</div>
 
-<a href="{{ url_for('nueva_categoria') }}" class="btn btn-success mb-3">Nueva Categoría</a>
-
-<table class="table table-bordered table-striped">
-  <thead class="table-dark">
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Descripción</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for categoria in categorias %}
-    <tr>
-      <td>{{ categoria.id }}</td>
-      <td>{{ categoria.nombre }}</td>
-      <td>{{ categoria.descripcion or '-' }}</td>
-    </tr>
-    {% else %}
-    <tr><td colspan="3">No hay categorías registradas.</td></tr>
-    {% endfor %}
-  </tbody>
+<table class="table table-striped">
+    <thead>
+        <tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+        {% for c in categorias %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>
+                <a href="{{ url_for('editar_categoria', cid=c.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form action="{{ url_for('eliminar_categoria', cid=c.id) }}" method="post" style="display:inline;">
+                    <button class="btn btn-sm btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
 {% endblock %}

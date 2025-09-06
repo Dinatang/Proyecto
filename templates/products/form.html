@@ -1,33 +1,21 @@
 {% extends "base.html" %}
-{% block title %}{{ 'Editar' if modo=='editar' else 'Nuevo' }} Producto{% endblock %}
-
+{% block title %}Producto{% endblock %}
 {% block content %}
-<h2>{{ 'Editar' if modo=='editar' else 'Nuevo' }} Producto</h2>
-
+<h2>{{ producto and 'Editar Producto' or 'Nuevo Producto' }}</h2>
 <form method="post">
-    {{ form.hidden_tag() }}
     <div class="mb-3">
-        {{ form.nombre.label(class="form-label") }}
-        {{ form.nombre(class="form-control") }}
-        {% for error in form.nombre.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        <label>Nombre</label>
+        <input type="text" name="nombre" class="form-control" value="{{ producto.nombre if producto else '' }}">
     </div>
     <div class="mb-3">
-        {{ form.cantidad.label(class="form-label") }}
-        {{ form.cantidad(class="form-control") }}
-        {% for error in form.cantidad.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        <label>Cantidad</label>
+        <input type="number" name="cantidad" class="form-control" value="{{ producto.cantidad if producto else '' }}">
     </div>
     <div class="mb-3">
-        {{ form.precio.label(class="form-label") }}
-        {{ form.precio(class="form-control") }}
-        {% for error in form.precio.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        <label>Precio</label>
+        <input type="number" step="0.01" name="precio" class="form-control" value="{{ producto.precio if producto else '' }}">
     </div>
-    <button type="submit" class="btn btn-primary">{{ 'Actualizar' if modo=='editar' else 'Guardar' }}</button>
+    <button class="btn btn-primary">Guardar</button>
     <a href="{{ url_for('listar_productos') }}" class="btn btn-secondary">Cancelar</a>
 </form>
 {% endblock %}

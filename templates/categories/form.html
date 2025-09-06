@@ -1,28 +1,13 @@
 {% extends "base.html" %}
-
-{% block title %}{{ 'Editar' if modo=='editar' else 'Nueva' }} Categoría{% endblock %}
-
+{% block title %}Categoría{% endblock %}
 {% block content %}
-<h2>{{ 'Editar' if modo=='editar' else 'Nueva' }} Categoría</h2>
-
+<h2>{{ categoria and 'Editar Categoría' or 'Nueva Categoría' }}</h2>
 <form method="post">
-    {{ form.hidden_tag() }}
     <div class="mb-3">
-        {{ form.nombre.label(class="form-label") }}
-        {{ form.nombre(class="form-control") }}
-        {% for error in form.nombre.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
+        <label>Nombre</label>
+        <input type="text" name="nombre" class="form-control" value="{{ categoria.nombre if categoria else '' }}">
     </div>
-    <div class="mb-3">
-        {{ form.descripcion.label(class="form-label") }}
-        {{ form.descripcion(class="form-control") }}
-        {% for error in form.descripcion.errors %}
-            <div class="text-danger">{{ error }}</div>
-        {% endfor %}
-    </div>
-    <button type="submit" class="btn btn-primary">{{ 'Actualizar' if modo=='editar' else 'Guardar' }}</button>
+    <button class="btn btn-primary">Guardar</button>
     <a href="{{ url_for('listar_categorias') }}" class="btn btn-secondary">Cancelar</a>
 </form>
 {% endblock %}
-

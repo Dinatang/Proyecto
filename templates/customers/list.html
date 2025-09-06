@@ -1,33 +1,25 @@
 {% extends "base.html" %}
-{% block title %}Lista de Clientes{% endblock %}
-
+{% block title %}Clientes{% endblock %}
 {% block content %}
-<h2>Lista de Clientes</h2>
-<a href="{{ url_for('nuevo_cliente') }}" class="btn btn-success mb-3">Nuevo Cliente</a>
+<div class="d-flex justify-content-between mb-3">
+    <h2>Clientes</h2>
+    <a href="{{ url_for('crear_cliente') }}" class="btn btn-success">Agregar</a>
+</div>
 
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            <th>Dirección</th>
-            <th>Acciones</th>
-        </tr>
+        <tr><th>ID</th><th>Nombre</th><th>Email</th><th>Acciones</th></tr>
     </thead>
     <tbody>
-        {% for cliente in clientes %}
+        {% for c in clientes %}
         <tr>
-            <td>{{ cliente.id }}</td>
-            <td>{{ cliente.nombre }}</td>
-            <td>{{ cliente.telefono }}</td>
-            <td>{{ cliente.correo }}</td>
-            <td>{{ cliente.direccion }}</td>
+            <td>{{ c.id }}</td>
+            <td>{{ c.nombre }}</td>
+            <td>{{ c.email }}</td>
             <td>
-                <a href="{{ url_for('editar_cliente', id=cliente.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                <form action="{{ url_for('eliminar_cliente', id=cliente.id) }}" method="post" style="display:inline;">
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Eliminar cliente?')">Eliminar</button>
+                <a href="{{ url_for('editar_cliente', cid=c.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <form action="{{ url_for('eliminar_cliente', cid=c.id) }}" method="post" style="display:inline;">
+                    <button class="btn btn-sm btn-danger">Eliminar</button>
                 </form>
             </td>
         </tr>
