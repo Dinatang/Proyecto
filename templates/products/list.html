@@ -1,16 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Productos{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between mb-3">
-    <h2>Productos</h2>
-    <a href="{{ url_for('crear_producto') }}" class="btn btn-success">Agregar</a>
-</div>
-
-<table class="table table-striped">
+<h2>Productos</h2>
+<a href="{{ url_for('crear_producto') }}" class="btn btn-primary mb-3">Nuevo Producto</a>
+<table class="table">
     <thead>
-        <tr>
-            <th>ID</th><th>Nombre</th><th>Cantidad</th><th>Precio</th><th>Acciones</th>
-        </tr>
+        <tr><th>ID</th><th>Nombre</th><th>Cantidad</th><th>Precio</th><th>Categoría</th></tr>
     </thead>
     <tbody>
         {% for p in productos %}
@@ -19,12 +13,7 @@
             <td>{{ p.nombre }}</td>
             <td>{{ p.cantidad }}</td>
             <td>{{ p.precio }}</td>
-            <td>
-                <a href="{{ url_for('editar_producto', pid=p.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                <form action="{{ url_for('eliminar_producto', pid=p.id) }}" method="post" style="display:inline;">
-                    <button class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-            </td>
+            <td>{{ p.categoria.nombre if p.categoria else "Sin categoría" }}</td>
         </tr>
         {% endfor %}
     </tbody>

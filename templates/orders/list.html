@@ -1,27 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Órdenes{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between mb-3">
-    <h2>Órdenes</h2>
-    <a href="{{ url_for('crear_orden') }}" class="btn btn-success">Agregar</a>
-</div>
-
-<table class="table table-striped">
+<h2>Órdenes</h2>
+<a href="{{ url_for('nueva_orden') }}" class="btn btn-primary mb-3">Nueva Orden</a>
+<table class="table">
     <thead>
-        <tr><th>ID</th><th>Cliente</th><th>Total</th><th>Acciones</th></tr>
+        <tr><th>ID</th><th>Cliente</th><th>Fecha</th><th>Total</th></tr>
     </thead>
     <tbody>
         {% for o in ordenes %}
         <tr>
             <td>{{ o.id }}</td>
             <td>{{ o.cliente.nombre }}</td>
+            <td>{{ o.fecha }}</td>
             <td>{{ o.total }}</td>
-            <td>
-                <a href="{{ url_for('editar_orden', oid=o.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                <form action="{{ url_for('eliminar_orden', oid=o.id) }}" method="post" style="display:inline;">
-                    <button class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-            </td>
         </tr>
         {% endfor %}
     </tbody>

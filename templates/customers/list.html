@@ -1,27 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Clientes{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between mb-3">
-    <h2>Clientes</h2>
-    <a href="{{ url_for('crear_cliente') }}" class="btn btn-success">Agregar</a>
-</div>
-
-<table class="table table-striped">
+<h2>Clientes</h2>
+<a href="{{ url_for('nuevo_cliente') }}" class="btn btn-primary mb-3">Nuevo Cliente</a>
+<table class="table">
     <thead>
-        <tr><th>ID</th><th>Nombre</th><th>Email</th><th>Acciones</th></tr>
+        <tr><th>ID</th><th>Nombre</th><th>Correo</th><th>Teléfono</th><th>Dirección</th></tr>
     </thead>
     <tbody>
         {% for c in clientes %}
         <tr>
             <td>{{ c.id }}</td>
             <td>{{ c.nombre }}</td>
-            <td>{{ c.email }}</td>
-            <td>
-                <a href="{{ url_for('editar_cliente', cid=c.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                <form action="{{ url_for('eliminar_cliente', cid=c.id) }}" method="post" style="display:inline;">
-                    <button class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-            </td>
+            <td>{{ c.correo }}</td>
+            <td>{{ c.telefono }}</td>
+            <td>{{ c.direccion }}</td>
         </tr>
         {% endfor %}
     </tbody>

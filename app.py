@@ -94,13 +94,12 @@ def listar_categorias():
     return render_template("categories/list.html", categorias=categorias)
 
 @app.route('/categorias/nuevo', methods=["GET", "POST"])
-def nueva_categoria():
+def form ():
     form = CategoriaForm()
     if form.validate_on_submit():
         db.session.add(Categoria(nombre=form.nombre.data, descripcion=form.descripcion.data))
         db.session.commit()
         flash("Categoría creada con éxito", "success")
-        return redirect(url_for("listar_categorias"))
     return render_template("categories/form.html", form=form, modo="nuevo")
 
 # --- CRUD PRODUCTOS ---

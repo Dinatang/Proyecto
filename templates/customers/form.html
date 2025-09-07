@@ -1,17 +1,14 @@
 {% extends "base.html" %}
-{% block title %}Cliente{% endblock %}
 {% block content %}
-<h2>{{ cliente and 'Editar Cliente' or 'Nuevo Cliente' }}</h2>
-<form method="post">
-    <div class="mb-3">
-        <label>Nombre</label>
-        <input type="text" name="nombre" class="form-control" value="{{ cliente.nombre if cliente else '' }}">
-    </div>
-    <div class="mb-3">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" value="{{ cliente.email if cliente else '' }}">
-    </div>
-    <button class="btn btn-primary">Guardar</button>
-    <a href="{{ url_for('listar_clientes') }}" class="btn btn-secondary">Cancelar</a>
+<h2>{{ "Nuevo Cliente" if modo=="nuevo" else "Editar Cliente" }}</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
+    <div class="mb-3">{{ form.correo.label }} {{ form.correo(class="form-control") }}</div>
+    <div class="mb-3">{{ form.telefono.label }} {{ form.telefono(class="form-control") }}</div>
+    <div class="mb-3">{{ form.direccion.label }} {{ form.direccion(class="form-control") }}</div>
+    {{ form.submit(class="btn btn-success") }}
 </form>
 {% endblock %}
+
+

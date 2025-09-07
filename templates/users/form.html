@@ -1,17 +1,13 @@
 {% extends "base.html" %}
-{% block title %}Usuario{% endblock %}
 {% block content %}
-<h2>{{ usuario and 'Editar Usuario' or 'Nuevo Usuario' }}</h2>
-<form method="post">
-    <div class="mb-3">
-        <label>Usuario</label>
-        <input type="text" name="username" class="form-control" value="{{ usuario.username if usuario else '' }}">
-    </div>
-    <div class="mb-3">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" value="{{ usuario.email if usuario else '' }}">
-    </div>
-    <button class="btn btn-primary">Guardar</button>
-    <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary">Cancelar</a>
+<h2>{{ "Nuevo Usuario" if modo=="nuevo" else "Editar Usuario" }}</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
+    <div class="mb-3">{{ form.correo.label }} {{ form.correo(class="form-control") }}</div>
+    <div class="mb-3">{{ form.contraseña.label }} {{ form.contraseña(class="form-control") }}</div>
+    <div class="mb-3">{{ form.rol.label }} {{ form.rol(class="form-select") }}</div>
+    {{ form.submit(class="btn btn-success") }}
 </form>
 {% endblock %}
+

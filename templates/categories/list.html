@@ -1,26 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Categorías{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between mb-3">
-    <h2>Categorías</h2>
-    <a href="{{ url_for('crear_categoria') }}" class="btn btn-success">Agregar</a>
-</div>
-
+<h2>Categorías</h2>
+<a href="{{ url_for('form') }}" class="btn btn-primary mb-3">Nueva Categoría</a>
 <table class="table table-striped">
     <thead>
-        <tr><th>ID</th><th>Nombre</th><th>Acciones</th></tr>
+        <tr>
+            <th>ID</th><th>Nombre</th><th>Descripción</th>
+        </tr>
     </thead>
     <tbody>
         {% for c in categorias %}
         <tr>
             <td>{{ c.id }}</td>
             <td>{{ c.nombre }}</td>
-            <td>
-                <a href="{{ url_for('editar_categoria', cid=c.id) }}" class="btn btn-sm btn-warning">Editar</a>
-                <form action="{{ url_for('eliminar_categoria', cid=c.id) }}" method="post" style="display:inline;">
-                    <button class="btn btn-sm btn-danger">Eliminar</button>
-                </form>
-            </td>
+            <td>{{ c.descripcion }}</td>
         </tr>
         {% endfor %}
     </tbody>

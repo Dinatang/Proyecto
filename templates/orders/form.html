@@ -1,21 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Orden{% endblock %}
 {% block content %}
-<h2>{{ orden and 'Editar Orden' or 'Nueva Orden' }}</h2>
-<form method="post">
-    <div class="mb-3">
-        <label>Cliente</label>
-        <select name="cliente_id" class="form-select">
-            {% for c in clientes %}
-            <option value="{{ c.id }}" {% if orden and orden.cliente_id == c.id %}selected{% endif %}>{{ c.nombre }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="mb-3">
-        <label>Total</label>
-        <input type="number" step="0.01" name="total" class="form-control" value="{{ orden.total if orden else '' }}">
-    </div>
-    <button class="btn btn-primary">Guardar</button>
-    <a href="{{ url_for('listar_ordenes') }}" class="btn btn-secondary">Cancelar</a>
+<h2>{{ "Nueva Orden" if modo=="nuevo" else "Editar Orden" }}</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-3">{{ form.cliente_id.label }} {{ form.cliente_id(class="form-select") }}</div>
+    <div class="mb-3">{{ form.fecha.label }} {{ form.fecha(class="form-control") }}</div>
+    {{ form.submit(class="btn btn-success") }}
 </form>
 {% endblock %}
