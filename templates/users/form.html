@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ "Nuevo Usuario" if modo=="nuevo" else "Editar Usuario" }}</h2>
+<h1>{% if modo == 'nuevo' %}Nuevo Usuario{% else %}Editar Usuario{% endif %}</h1>
+
 <form method="POST">
     {{ form.hidden_tag() }}
-    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
-    <div class="mb-3">{{ form.correo.label }} {{ form.correo(class="form-control") }}</div>
-    <div class="mb-3">{{ form.contraseña.label }} {{ form.contraseña(class="form-control") }}</div>
-    <div class="mb-3">{{ form.rol.label }} {{ form.rol(class="form-select") }}</div>
-    {{ form.submit(class="btn btn-success") }}
+    <p>{{ form.nombre.label }}<br>{{ form.nombre(size=40) }}</p>
+    <p>{{ form.correo.label }}<br>{{ form.correo(size=40) }}</p>
+    <p>{{ form.contraseña.label }}<br>{{ form.contraseña() }}</p>
+    <p>{{ form.rol.label }}<br>{{ form.rol() }}</p>
+    <p>{{ form.submit() }}</p>
 </form>
-{% endblock %}
 
+<a href="{{ url_for('listar_usuarios') }}">Volver a la lista</a>
+{% endblock %}

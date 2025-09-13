@@ -3,13 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DecimalField, PasswordField, SelectField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, Length, Email
+from connection.config import Config
+from sqlalchemy import text
 
 # --- Configuración ---
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'dulcehogar-secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dulcehogar.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object(Config)
 db = SQLAlchemy(app)
+
+# --- PROBAR CONEXIÓN ---
+with app.app_context():
+    try:
+        db.session.execute(text("SELECT 1"))
+        print("✅ Conexión exitosa a MySQL!")
+    except Exception as e:
+        print("❌ Error en la conexión:", e)
 
 # --- MODELOS ---
 class Categoria(db.Model):
@@ -78,14 +86,15 @@ class OrdenForm(FlaskForm):
     fecha = StringField("Fecha", validators=[DataRequired()])
     submit = SubmitField("Guardar")
 
-# --- RUTAS GENERALES ---
+# --- CREAR TABLAS ---
+with app.app_context():
+    db.create_all()
+    print("✅ Tablas creadas o ya existentes")
+
+# --- RUTAS DE PRUEBA ---
 @app.route('/')
 def index():
-    return render_template("index.html", title="Inicio")
-
-@app.route('/about/')
-def about():
-    return render_template("about.html", title="Acerca de")
+    return "DulceHogar - Conexión MySQL exitosa!"
 
 # --- CRUD CATEGORIAS ---
 @app.route('/categorias')
@@ -94,12 +103,13 @@ def listar_categorias():
     return render_template("categories/list.html", categorias=categorias)
 
 @app.route('/categorias/nuevo', methods=["GET", "POST"])
-def form ():
+def nuevo_categoria():
     form = CategoriaForm()
     if form.validate_on_submit():
         db.session.add(Categoria(nombre=form.nombre.data, descripcion=form.descripcion.data))
         db.session.commit()
         flash("Categoría creada con éxito", "success")
+        return redirect(url_for("listar_categorias"))
     return render_template("categories/form.html", form=form, modo="nuevo")
 
 # --- CRUD PRODUCTOS ---
@@ -108,8 +118,8 @@ def listar_productos():
     productos = Producto.query.all()
     return render_template("products/list.html", productos=productos)
 
-@app.route('/productos/nuevo', methods=['GET', 'POST'])
-def crear_producto():
+@app.route('/productos/nuevo', methods=["GET", "POST"])
+def nuevo_producto():
     form = ProductoForm()
     form.categoria_id.choices = [(c.id, c.nombre) for c in Categoria.query.all()]
     if form.validate_on_submit():
@@ -120,9 +130,9 @@ def crear_producto():
             categoria_id=form.categoria_id.data
         ))
         db.session.commit()
-        flash("Producto agregado correctamente.", "success")
-        return redirect(url_for('listar_productos'))
-    return render_template('products/form.html', form=form, modo='crear')
+        flash("Producto creado con éxito", "success")
+        return redirect(url_for("listar_productos"))
+    return render_template("products/form.html", form=form, modo="nuevo")
 
 # --- CRUD CLIENTES ---
 @app.route('/clientes')
@@ -193,31 +203,6 @@ def nueva_orden():
         return redirect(url_for("listar_ordenes"))
     return render_template("orders/form.html", form=form, modo="nuevo")
 
-@app.route('/ordenes/editar/<int:id>', methods=["GET", "POST"])
-def editar_orden(id):
-    orden = Orden.query.get_or_404(id)
-    form = OrdenForm(obj=orden)
-    form.cliente_id.choices = [(c.id, c.nombre) for c in Cliente.query.all()]
-
-    if form.validate_on_submit():
-        orden.cliente_id = form.cliente_id.data
-        orden.fecha = form.fecha.data
-        db.session.commit()
-        flash("Orden actualizada con éxito.", "success")
-        return redirect(url_for("listar_ordenes"))
-
-    return render_template("orders/form.html", form=form, modo="editar")
-
-@app.route('/ordenes/eliminar/<int:id>', methods=["POST"])
-def eliminar_orden(id):
-    orden = Orden.query.get_or_404(id)
-    db.session.delete(orden)
-    db.session.commit()
-    flash("Orden eliminada con éxito.", "danger")
-    return redirect(url_for("listar_ordenes"))
-
-# --- INICIALIZAR DB ---
+# --- EJECUTAR APP ---
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)

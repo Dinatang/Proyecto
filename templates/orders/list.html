@@ -1,20 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Órdenes</h2>
-<a href="{{ url_for('nueva_orden') }}" class="btn btn-primary mb-3">Nueva Orden</a>
-<table class="table">
-    <thead>
-        <tr><th>ID</th><th>Cliente</th><th>Fecha</th><th>Total</th></tr>
-    </thead>
-    <tbody>
-        {% for o in ordenes %}
-        <tr>
-            <td>{{ o.id }}</td>
-            <td>{{ o.cliente.nombre }}</td>
-            <td>{{ o.fecha }}</td>
-            <td>{{ o.total }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<h1>Órdenes</h1>
+<a href="{{ url_for('nueva_orden') }}">Nueva Orden</a>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Cliente</th>
+        <th>Fecha</th>
+        <th>Total</th>
+    </tr>
+    {% for o in ordenes %}
+    <tr>
+        <td>{{ o.id }}</td>
+        <td>{{ o.cliente.nombre }}</td>
+        <td>{{ o.fecha }}</td>
+        <td>{{ o.total }}</td>
+    </tr>
+    {% endfor %}
 </table>
 {% endblock %}

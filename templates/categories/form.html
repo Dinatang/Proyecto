@@ -1,16 +1,19 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ "Nueva Categoría" if modo=="nuevo" else "Editar Categoría" }}</h2>
+<h1>{% if modo == 'nuevo' %}Nueva Categoría{% else %}Editar Categoría{% endif %}</h1>
+
 <form method="POST">
     {{ form.hidden_tag() }}
-    <div class="mb-3">
-        {{ form.nombre.label(class="form-label") }}
-        {{ form.nombre(class="form-control") }}
-    </div>
-    <div class="mb-3">
-        {{ form.descripcion.label(class="form-label") }}
-        {{ form.descripcion(class="form-control") }}
-    </div>
-    {{ form.submit(class="btn btn-success") }}
+    <p>
+        {{ form.nombre.label }}<br>
+        {{ form.nombre(size=40) }}
+    </p>
+    <p>
+        {{ form.descripcion.label }}<br>
+        {{ form.descripcion(size=60) }}
+    </p>
+    <p>{{ form.submit() }}</p>
 </form>
+
+<a href="{{ url_for('listar_categorias') }}">Volver a la lista</a>
 {% endblock %}

@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ "Nuevo Cliente" if modo=="nuevo" else "Editar Cliente" }}</h2>
+<h1>{% if modo == 'nuevo' %}Nuevo Cliente{% else %}Editar Cliente{% endif %}</h1>
+
 <form method="POST">
     {{ form.hidden_tag() }}
-    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
-    <div class="mb-3">{{ form.correo.label }} {{ form.correo(class="form-control") }}</div>
-    <div class="mb-3">{{ form.telefono.label }} {{ form.telefono(class="form-control") }}</div>
-    <div class="mb-3">{{ form.direccion.label }} {{ form.direccion(class="form-control") }}</div>
-    {{ form.submit(class="btn btn-success") }}
+    <p>{{ form.nombre.label }}<br>{{ form.nombre(size=40) }}</p>
+    <p>{{ form.correo.label }}<br>{{ form.correo(size=40) }}</p>
+    <p>{{ form.telefono.label }}<br>{{ form.telefono(size=20) }}</p>
+    <p>{{ form.direccion.label }}<br>{{ form.direccion(size=60) }}</p>
+    <p>{{ form.submit() }}</p>
 </form>
-{% endblock %}
 
+<a href="{{ url_for('listar_clientes') }}">Volver a la lista</a>
+{% endblock %}
 

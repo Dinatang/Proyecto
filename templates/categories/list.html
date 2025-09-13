@@ -1,21 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>Categorías</h2>
-<a href="{{ url_for('form') }}" class="btn btn-primary mb-3">Nueva Categoría</a>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>ID</th><th>Nombre</th><th>Descripción</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for c in categorias %}
-        <tr>
-            <td>{{ c.id }}</td>
-            <td>{{ c.nombre }}</td>
-            <td>{{ c.descripcion }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+<h1>Categorías</h1>
+<a href="{{ url_for('nuevo_categoria') }}">Nueva Categoría</a>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, msg in messages %}
+      <div class="alert alert-{{ category }}">{{ msg }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+    </tr>
+    {% for cat in categorias %}
+    <tr>
+        <td>{{ cat.id }}</td>
+        <td>{{ cat.nombre }}</td>
+        <td>{{ cat.descripcion }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
 </table>
 {% endblock %}

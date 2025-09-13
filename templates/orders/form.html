@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ "Nueva Orden" if modo=="nuevo" else "Editar Orden" }}</h2>
+<h1>{% if modo == 'nuevo' %}Nueva Orden{% else %}Editar Orden{% endif %}</h1>
+
 <form method="POST">
     {{ form.hidden_tag() }}
-    <div class="mb-3">{{ form.cliente_id.label }} {{ form.cliente_id(class="form-select") }}</div>
-    <div class="mb-3">{{ form.fecha.label }} {{ form.fecha(class="form-control") }}</div>
-    {{ form.submit(class="btn btn-success") }}
+    <p>{{ form.cliente_id.label }}<br>{{ form.cliente_id() }}</p>
+    <p>{{ form.fecha.label }}<br>{{ form.fecha(size=20) }}</p>
+    <p>{{ form.submit() }}</p>
 </form>
+
+<a href="{{ url_for('listar_ordenes') }}">Volver a la lista</a>
 {% endblock %}

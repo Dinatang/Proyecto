@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
-<h2>{{ "Nuevo Producto" if modo=="crear" else "Editar Producto" }}</h2>
+<h1>{% if modo == 'nuevo' %}Nuevo Producto{% else %}Editar Producto{% endif %}</h1>
+
 <form method="POST">
     {{ form.hidden_tag() }}
-    <div class="mb-3">{{ form.nombre.label }} {{ form.nombre(class="form-control") }}</div>
-    <div class="mb-3">{{ form.cantidad.label }} {{ form.cantidad(class="form-control") }}</div>
-    <div class="mb-3">{{ form.precio.label }} {{ form.precio(class="form-control") }}</div>
-    <div class="mb-3">{{ form.categoria_id.label }} {{ form.categoria_id(class="form-select") }}</div>
-    {{ form.submit(class="btn btn-success") }}
+    <p>{{ form.nombre.label }}<br>{{ form.nombre(size=40) }}</p>
+    <p>{{ form.cantidad.label }}<br>{{ form.cantidad() }}</p>
+    <p>{{ form.precio.label }}<br>{{ form.precio() }}</p>
+    <p>{{ form.categoria_id.label }}<br>{{ form.categoria_id() }}</p>
+    <p>{{ form.submit() }}</p>
 </form>
+
+<a href="{{ url_for('listar_productos') }}">Volver a la lista</a>
 {% endblock %}
