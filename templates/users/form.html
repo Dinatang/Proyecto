@@ -1,15 +1,98 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>{% if modo == 'nuevo' %}Nuevo Usuario{% else %}Editar Usuario{% endif %}</h1>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h2 class="card-title mb-0 text-center">
+                        <i class="fas fa-user me-2"></i>
+                        {% if modo == 'nuevo' %}Nuevo Usuario{% else %}Editar Usuario{% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            {{ form.nombre.label(class="form-label fw-bold") }}
+                            {{ form.nombre(class="form-control", size=40, placeholder="Nombre completo del usuario") }}
+                            {% if form.nombre.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.nombre.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.correo.label(class="form-label fw-bold") }}
+                            {{ form.correo(class="form-control", size=40, placeholder="correo@ejemplo.com", type="email") }}
+                            {% if form.correo.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.correo.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            {{ form.contraseña.label(class="form-label fw-bold") }}
+                            {{ form.contraseña(class="form-control", placeholder="Contraseña segura", type="password") }}
+                            {% if form.contraseña.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.contraseña.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if modo == 'editar' %}
+                                <div class="form-text">Dejar en blanco si no deseas cambiar la contraseña.</div>
+                            {% else %}
+                                <div class="form-text">La contraseña debe ser segura.</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-4">
+                            {{ form.rol.label(class="form-label fw-bold") }}
+                            {{ form.rol(class="form-select") }}
+                            {% if form.rol.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.rol.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Selecciona el rol del usuario en el sistema.</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-arrow-left me-1"></i> Volver a la lista
+                            </a>
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
-    <p>{{ form.nombre.label }}<br>{{ form.nombre(size=40) }}</p>
-    <p>{{ form.correo.label }}<br>{{ form.correo(size=40) }}</p>
-    <p>{{ form.contraseña.label }}<br>{{ form.contraseña() }}</p>
-    <p>{{ form.rol.label }}<br>{{ form.rol() }}</p>
-    <p>{{ form.submit() }}</p>
-</form>
-
-<a href="{{ url_for('listar_usuarios') }}">Volver a la lista</a>
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #8B4513;
+        box-shadow: 0 0 0 0.25rem rgba(139, 69, 19, 0.25);
+    }
+    .btn-primary {
+        background-color: #8B4513;
+        border-color: #8B4513;
+    }
+    .btn-primary:hover {
+        background-color: #A0522D;
+        border-color: #A0522D;
+    }
+</style>
 {% endblock %}

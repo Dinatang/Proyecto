@@ -1,24 +1,92 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Clientes</h1>
-<a href="{{ url_for('nuevo_cliente') }}">Nuevo Cliente</a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="fas fa-users me-2"></i>Clientes
+        </h1>
+        <a href="{{ url_for('nuevo_cliente') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nuevo Cliente
+        </a>
+    </div>
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Teléfono</th>
-        <th>Dirección</th>
-    </tr>
-    {% for c in clientes %}
-    <tr>
-        <td>{{ c.id }}</td>
-        <td>{{ c.nombre }}</td>
-        <td>{{ c.correo }}</td>
-        <td>{{ c.telefono }}</td>
-        <td>{{ c.direccion }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if clientes %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Teléfono</th>
+                            <th scope="col">Dirección</th>
+                            <th scope="col" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in clientes %}
+                        <tr>
+                            <th scope="row">{{ c.id }}</th>
+                            <td>{{ c.nombre }}</td>
+                            <td>{{ c.correo }}</td>
+                            <td>{{ c.telefono }}</td>
+                            <td>{{ c.direccion }}</td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('editar_cliente', id=c.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ c.id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Modal de confirmación para eliminar -->
+                        <div class="modal fade" id="eliminarModal{{ c.id }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ c.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel{{ c.id }}">Confirmar Eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas eliminar al cliente "{{ c.nombre }}"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{ url_for('eliminar_cliente', id=c.id) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center mt-5">
+        <h4 class="alert-heading">No hay clientes registrados</h4>
+        <p>Comienza agregando un nuevo cliente haciendo clic en el botón "Nuevo Cliente".</p>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

@@ -1,22 +1,104 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Usuarios</h1>
-<a href="{{ url_for('nuevo_usuario') }}">Nuevo Usuario</a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="fas fa-users-cog me-2"></i>Usuarios del Sistema
+        </h1>
+        <a href="{{ url_for('nuevo_usuario') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Nuevo Usuario
+        </a>
+    </div>
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>Rol</th>
-    </tr>
-    {% for u in usuarios %}
-    <tr>
-        <td>{{ u.id }}</td>
-        <td>{{ u.nombre }}</td>
-        <td>{{ u.correo }}</td>
-        <td>{{ u.rol }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    <i class="fas 
+                    {% if category == 'success' %}fa-check-circle 
+                    {% elif category == 'danger' %}fa-exclamation-circle 
+                    {% elif category == 'warning' %}fa-exclamation-triangle 
+                    {% else %}fa-info-circle{% endif %} me-2"></i>
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if usuarios %}
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Correo</th>
+                            <th scope="col">Rol</th>
+                            <th scope="col" class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in usuarios %}
+                        <tr>
+                            <th scope="row">{{ u.id }}</th>
+                            <td>{{ u.nombre }}</td>
+                            <td>{{ u.correo }}</td>
+                            <td>
+                                <span class="badge {% if u.rol == 'admin' %}bg-danger{% else %}bg-info{% endif %}">
+                                    {{ u.rol | capitalize }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group" role="group">
+                                    <a href="{{ url_for('editar_usuario', id=u.id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% if u.id != 1 %} {# Evitar eliminar el usuario admin principal #}
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ u.id }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Modal de confirmación para eliminar -->
+                        {% if u.id != 1 %}
+                        <div class="modal fade" id="eliminarModal{{ u.id }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ u.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel{{ u.id }}">Confirmar Eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas eliminar al usuario "{{ u.nombre }}"?
+                                        <br><small class="text-muted">Esta acción no se puede deshacer.</small>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{ url_for('eliminar_usuario', id=u.id) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center mt-5">
+        <h4 class="alert-heading">No hay usuarios registrados</h4>
+        <p>Comienza agregando un nuevo usuario haciendo clic en el botón "Nuevo Usuario".</p>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

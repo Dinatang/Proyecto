@@ -2,7 +2,152 @@
 {% block title %}Acerca de - Dulce Hogar{% endblock %}
 
 {% block content %}
-<h2>Acerca de Dulce Hogar</h2>
-<p>Somos una panadería y pastelería comprometida con la calidad y frescura de nuestros productos.</p>
-<p>En esta aplicación puedes agregar, editar, buscar y eliminar tus productos de manera sencilla.</p>
+<!-- Hero Section -->
+<section class="hero-about bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold text-primary">Dulce Hogar</h1>
+                <p class="lead">Panadería y Pastelería Artesanal</p>
+                <p class="mt-4">Somos una panadería y pastelería comprometida con la calidad y frescura de nuestros productos. 
+                Cada día horneamos con amor y dedicación para endulzar tus momentos especiales.</p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80" 
+                     alt="Panadería Dulce Hogar" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nuestros Valores</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon bg-primary bg-gradient rounded-circle p-3 mb-3 mx-auto">
+                            <i class="fas fa-bread-slice fa-2x text-white"></i>
+                        </div>
+                        <h3 class="h4">Frescura Garantizada</h3>
+                        <p class="card-text">Elaboramos nuestros productos diariamente con ingredientes seleccionados para garantizar la máxima frescura.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon bg-primary bg-gradient rounded-circle p-3 mb-3 mx-auto">
+                            <i class="fas fa-heart fa-2x text-white"></i>
+                        </div>
+                        <h3 class="h4">Hecho con Amor</h3>
+                        <p class="card-text">Cada producto está elaborado artesanalmente con dedicación y el toque especial de nuestra familia.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="feature-icon bg-primary bg-gradient rounded-circle p-3 mb-3 mx-auto">
+                            <i class="fas fa-seedling fa-2x text-white"></i>
+                        </div>
+                        <h3 class="h4">Ingredientes Naturales</h3>
+                        <p class="card-text">Utilizamos materias primas de primera calidad, priorizando productos locales y naturales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- App Description Section -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2">
+                <h2 class="mb-4">Gestiona tus Productos</h2>
+                <p>En esta aplicación puedes agregar, editar, buscar y eliminar tus productos de manera sencilla.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Catálogo digital de productos</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Gestión de inventario simplificada</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Actualización de precios y disponibilidad</li>
+                    <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Organización por categorías</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 order-lg-1 text-center">
+                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=400&q=80" 
+                     alt="Gestión de productos" class="img-fluid rounded shadow">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Nuestra Familia</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 text-center">
+                    <img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400&q=80" 
+                         class="card-img-top rounded-circle mx-auto mt-4" alt="Fundadora" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <h3 class="h5">María Rodríguez</h3>
+                        <p class="text-muted">Fundadora y Pastelera Principal</p>
+                        <p class="card-text">Con más de 20 años de experiencia en repostería tradicional.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 text-center">
+                    <img src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400&q=80" 
+                         class="card-img-top rounded-circle mx-auto mt-4" alt="Panadero" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <h3 class="h5">Carlos Méndez</h3>
+                        <p class="text-muted">Jefe de Panadería</p>
+                        <p class="card-text">Especialista en panadería artesanal con técnicas tradicionales.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 text-center">
+                    <img src="https://images.unsplash.com/photo-1577221084712-45b0445d2b00?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&h=400&q=80" 
+                         class="card-img-top rounded-circle mx-auto mt-4" alt="Decoradora" style="width: 150px; height: 150px; object-fit: cover;">
+                    <div class="card-body">
+                        <h3 class="h5">Elena Sánchez</h3>
+                        <p class="text-muted">Decoradora y Creativa</p>
+                        <p class="card-text">Transforma nuestros postres en auténticas obras de arte.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">¿Listo para gestionar tus productos?</h2>
+        <p class="lead mb-4">Comienza a organizar tu inventario de manera sencilla y eficiente</p>
+        <a href="{{ url_for('listar_productos') }}" class="btn btn-light btn-lg">Comenzar ahora</a>
+    </div>
+</section>
+
+<style>
+    .hero-about {
+        background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+                    url('https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+        background-size: cover;
+        background-position: center;
+    }
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
 {% endblock %}
