@@ -2,7 +2,9 @@
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="display-4">Gestión de Categorías</h1>
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="fas fa-tags me-2"></i>Categorías
+        </h1>
         <a href="{{ url_for('nuevo_categoria') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>Nueva Categoría
         </a>
@@ -40,15 +42,38 @@
                             <td>{{ cat.descripcion }}</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <a href="#" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-edit"></i>
+                                    <!-- Botón Modificar con texto -->
+                                    <a href="{{ url_for('editar_categoria', id=cat.id) }}" class="btn btn-sm btn-outline-primary me-1">
+                                        Modificar
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    <!-- Botón Eliminar con texto que abre modal -->
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ cat.id }}">
+                                        Eliminar
+                                    </button>
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- Modal de confirmación para eliminar -->
+                        <div class="modal fade" id="eliminarModal{{ cat.id }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ cat.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel{{ cat.id }}">Confirmar Eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas eliminar la categoría "{{ cat.nombre }}"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{ url_for('eliminar_categoria', id=cat.id) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -62,4 +87,30 @@
     </div>
     {% endif %}
 </div>
+
+<style>
+    .btn-group .btn {
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    .btn-outline-primary {
+        color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .btn-outline-primary:hover {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+    .btn-outline-danger:hover {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+</style>
 {% endblock %}

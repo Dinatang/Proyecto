@@ -3,12 +3,23 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-5 fw-bold text-primary">
-            <i class="fas fa-bread-slice me-2"></i>Productos
+            <i class="fas fa-box me-2"></i>Productos
         </h1>
         <a href="{{ url_for('nuevo_producto') }}" class="btn btn-primary">
             <i class="fas fa-plus me-2"></i>Nuevo Producto
         </a>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
     {% if productos %}
     <div class="card shadow-sm">
@@ -19,8 +30,9 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Cantidad</th>
+                            <th scope="col">Descripción</th>
                             <th scope="col">Precio</th>
+                            <th scope="col">Stock</th>
                             <th scope="col">Categoría</th>
                             <th scope="col" class="text-center">Acciones</th>
                         </tr>
@@ -30,24 +42,44 @@
                         <tr>
                             <th scope="row">{{ p.id }}</th>
                             <td>{{ p.nombre }}</td>
-                            <td>
-                                <span class="badge {% if p.cantidad > 10 %}bg-success{% elif p.cantidad > 0 %}bg-warning{% else %}bg-danger{% endif %}">
-                                    {{ p.cantidad }}
-                                </span>
-                            </td>
-                            <td>${{ "{:,.2f}".format(p.precio) }}</td>
-                            <td>{{ p.categoria.nombre if p.categoria else '-' }}</td>
+                            <td>{{ p.descripcion }}</td>
+                            <td>${{ p.precio }}</td>
+                            <td>{{ p.stock }}</td>
+                            <td>{{ p.categoria_nombre }}</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <a href="#" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-edit"></i>
+                                    <!-- Botón Modificar con texto -->
+                                    <a href="{{ url_for('editar_producto', id=p.id) }}" class="btn btn-sm btn-outline-primary me-1">
+                                        Modificar
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    <!-- Botón Eliminar con texto que abre modal -->
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ p.id }}">
+                                        Eliminar
+                                    </button>
                                 </div>
                             </td>
                         </tr>
+
+                        <!-- Modal de confirmación para eliminar -->
+                        <div class="modal fade" id="eliminarModal{{ p.id }}" tabindex="-1" aria-labelledby="eliminarModalLabel{{ p.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eliminarModalLabel{{ p.id }}">Confirmar Eliminación</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        ¿Estás seguro de que deseas eliminar el producto "{{ p.nombre }}"?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form action="{{ url_for('eliminar_producto', id=p.id) }}" method="POST" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -61,4 +93,30 @@
     </div>
     {% endif %}
 </div>
+
+<style>
+    .btn-group .btn {
+        border-radius: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    .btn-outline-primary {
+        color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .btn-outline-primary:hover {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+    .btn-outline-danger:hover {
+        color: #fff;
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+</style>
 {% endblock %}
