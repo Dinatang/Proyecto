@@ -31,8 +31,8 @@
                             <th scope="col">ID</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripción</th>
+                            <th scope="col">Cantidad</th>
                             <th scope="col">Precio</th>
-                            <th scope="col">Stock</th>
                             <th scope="col">Categoría</th>
                             <th scope="col" class="text-center">Acciones</th>
                         </tr>
@@ -43,16 +43,14 @@
                             <th scope="row">{{ p.id }}</th>
                             <td>{{ p.nombre }}</td>
                             <td>{{ p.descripcion }}</td>
+                            <td>{{ p.cantidad }}</td>
                             <td>${{ p.precio }}</td>
-                            <td>{{ p.stock }}</td>
-                            <td>{{ p.categoria_nombre }}</td>
+                            <td>{{ p.categoria.nombre if p.categoria else "Sin categoría" }}</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <!-- Botón Modificar con texto -->
                                     <a href="{{ url_for('editar_producto', id=p.id) }}" class="btn btn-sm btn-outline-primary me-1">
                                         Modificar
                                     </a>
-                                    <!-- Botón Eliminar con texto que abre modal -->
                                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ p.id }}">
                                         Eliminar
                                     </button>
