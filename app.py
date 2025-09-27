@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from wtforms import StringField, IntegerField, DecimalField, PasswordField, SelectField, SubmitField
+from wtforms import StringField, IntegerField, DecimalField, PasswordField, SelectField, TextAreaField
 from wtforms.validators import DataRequired, NumberRange, Length, Email, Optional
 from functools import wraps
 from connection.config import Config
@@ -50,6 +50,7 @@ class Producto(db.Model):
 class Cliente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(120), nullable=False)
+    descripcion = db.Column(db.String(200))  # 👈 añadido
     correo = db.Column(db.String(120), unique=True, nullable=False)
     telefono = db.Column(db.String(20))
     direccion = db.Column(db.String(200))
@@ -76,6 +77,7 @@ class CategoriaForm(FlaskForm):
 
 class ProductoForm(FlaskForm):
     nombre = StringField("Nombre", validators=[DataRequired(), Length(min=2, max=120)])
+    descripcion = TextAreaField("Descripcion")   # # ahora sí funciona
     cantidad = IntegerField("Cantidad", validators=[DataRequired(), NumberRange(min=0)])
     precio = DecimalField("Precio", validators=[DataRequired(), NumberRange(min=0)])
     categoria_id = SelectField("Categoría", coerce=int)
