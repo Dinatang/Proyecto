@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from flask_bcrypt import Bcrypt
-from wtforms import StringField, IntegerField, DecimalField, PasswordField, SelectField, TextAreaField
+from wtforms import StringField, IntegerField, DecimalField, PasswordField, SelectField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, NumberRange, Length, Email, Optional
 from functools import wraps
 from connection.config import Config
