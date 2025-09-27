@@ -210,7 +210,11 @@ def eliminar_categoria(id):
 @app.route('/productos')
 @login_required
 def listar_productos():
-    productos = Producto.query.all()
+    # Obtener el número de página desde la query string, default=1
+    page = request.args.get('page', 1, type=int)
+    
+    # Paginación: 10 productos por página
+    productos = Producto.query.order_by(Producto.id).paginate(page=page, per_page=10)
     return render_template("products/list.html", productos=productos)
 
 @app.route('/productos/nuevo', methods=["GET", "POST"])
