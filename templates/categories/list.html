@@ -21,7 +21,7 @@
       {% endif %}
     {% endwith %}
 
-    {% if categorias %}
+    {% if categorias.items %}
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
@@ -35,18 +35,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for cat in categorias %}
+                        {% for cat in categorias.items %}
                         <tr>
                             <th scope="row">{{ cat.id }}</th>
                             <td>{{ cat.nombre }}</td>
                             <td>{{ cat.descripcion }}</td>
                             <td class="text-center">
                                 <div class="btn-group" role="group">
-                                    <!-- Botón Modificar con texto -->
                                     <a href="{{ url_for('editar_categoria', id=cat.id) }}" class="btn btn-sm btn-outline-primary me-1">
                                         Modificar
                                     </a>
-                                    <!-- Botón Eliminar con texto que abre modal -->
                                     <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal{{ cat.id }}">
                                         Eliminar
                                     </button>
@@ -78,6 +76,33 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- 🔹 Paginación -->
+            <nav aria-label="Page navigation">
+              <ul class="pagination justify-content-center">
+                {% if categorias.has_prev %}
+                  <li class="page-item">
+                    <a class="page-link" href="{{ url_for('listar_categorias', page=categorias.prev_num) }}">Anterior</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                {% for p in range(1, categorias.pages + 1) %}
+                  <li class="page-item {% if p == categorias.page %}active{% endif %}">
+                    <a class="page-link" href="{{ url_for('listar_categorias', page=p) }}">{{ p }}</a>
+                  </li>
+                {% endfor %}
+
+                {% if categorias.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="{{ url_for('listar_categorias', page=categorias.next_num) }}">Siguiente</a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                {% endif %}
+              </ul>
+            </nav>
         </div>
     </div>
     {% else %}

@@ -165,7 +165,8 @@ def about():
 @login_required
 @admin_required
 def listar_categorias():
-    categorias = Categoria.query.all()
+    page = request.args.get('page', 1, type=int)
+    categorias = Categoria.query.order_by(Categoria.id).paginate(page=page, per_page=10)
     return render_template("categories/list.html", categorias=categorias)
 
 @app.route('/categorias/nuevo', methods=["GET", "POST"])
@@ -261,7 +262,8 @@ def eliminar_producto(id):
 @app.route('/clientes')
 @login_required
 def listar_clientes():
-    clientes = Cliente.query.all()
+    page = request.args.get('page', 1, type=int)
+    clientes = Cliente.query.order_by(Cliente.id).paginate(page=page, per_page=10)
     return render_template("customers/list.html", clientes=clientes)
 
 @app.route('/clientes/nuevo', methods=["GET", "POST"])
@@ -308,7 +310,8 @@ def eliminar_cliente(id):
 @login_required
 @admin_required
 def listar_usuarios():
-    usuarios = Usuario.query.all()
+    page = request.args.get('page', 1, type=int)
+    usuarios = Usuario.query.order_by(Usuario.id).paginate(page=page, per_page=10)
     return render_template("users/list.html", usuarios=usuarios)
 
 @app.route("/usuarios/nuevo", methods=["GET", "POST"])
@@ -372,7 +375,8 @@ def eliminar_usuario(id):
 @app.route('/ordenes')
 @login_required
 def listar_ordenes():
-    ordenes = Orden.query.all()
+    page = request.args.get('page', 1, type=int)
+    ordenes = Orden.query.order_by(Orden.id).paginate(page=page, per_page=10)
     return render_template("orders/list.html", ordenes=ordenes)
 
 @app.route('/ordenes/nuevo', methods=["GET", "POST"])
